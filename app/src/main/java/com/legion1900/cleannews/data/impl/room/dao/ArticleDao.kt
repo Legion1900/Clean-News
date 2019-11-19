@@ -11,12 +11,6 @@ interface ArticleDao {
     @Insert
     fun insert(vararg articles: ArticleEntity)
 
-    @Query("SELECT article FROM Article")
-    fun getAllArticles(): List<Article>
-
     @Query("SELECT article FROM Article WHERE topic IN (:topic)")
     fun getArticlesFor(topic: String): List<Article>
-
-    @Query("DELETE FROM Article")
-    fun clear()
 }
