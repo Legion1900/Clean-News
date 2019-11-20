@@ -21,10 +21,6 @@ class ArticleDaoTest {
 
     private lateinit var db: CacheDatabase
 
-    @Rule
-    @JvmField
-    val rule = InstantTaskExecutorRule()
-
     @Before
     fun onPrepareDb() {
         db = DatabaseProvider.provideInMemoryDb(CacheDatabase::class.java)
