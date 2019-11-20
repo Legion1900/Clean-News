@@ -7,7 +7,7 @@ import com.legion1900.cleannews.data.impl.utils.EntityConverter.articlesToEntiti
 import java.util.*
 import kotlin.random.Random
 
-object DataProvider {
+object ArticleProvider {
     val TOPICS = arrayOf("Software", "Cybersecurity", "Cinema", "Sport")
 
     private const val AUTHOR = "Author"
@@ -16,31 +16,6 @@ object DataProvider {
     private const val SOURCE = "Source"
     private const val URL = "https://example.com"
     private const val DESC = "Foo Bar"
-
-    fun buildDefaultCacheEntities(): List<CacheDataEntity> {
-        val entities = mutableListOf<CacheDataEntity>()
-        for (topic in TOPICS)
-            entities += CacheDataEntity(topic, getRandomDate())
-        return entities
-    }
-
-    private fun getRandomDate() = Date(Random.nextLong())
-
-    fun buildArticleEntities(num: Int): List<ArticleEntity> {
-        val articles = mutableListOf<Article>()
-        for (i in 0 until num)
-            articles += buildArticle()
-        return articlesToEntities(articles)
-    }
-
-    fun buildDefaultArticleEntities(num: Int): List<ArticleEntity> {
-        val entities = mutableListOf<ArticleEntity>()
-        for (topic in TOPICS) {
-            val articles = buildArticleList(num)
-            entities += articlesToEntities(articles, topic)
-        }
-        return entities
-    }
 
     private fun buildArticle() = Article(AUTHOR, TITLE, PUB_AT, SOURCE, URL, DESC)
 

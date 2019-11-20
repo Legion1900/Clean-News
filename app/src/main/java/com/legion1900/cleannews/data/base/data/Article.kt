@@ -5,7 +5,7 @@ import android.os.Parcelable
 
 data class Article(
     val author: String?,
-    val title: String?,
+    var title: String?,
     val publishedAt: String?,
     val sourceName: String?,
     val urlToImage: String?,

@@ -2,15 +2,17 @@ package com.legion1900.cleannews.data.impl.retrofit
 
 import com.legion1900.cleannews.BuildConfig
 import com.legion1900.cleannews.data.base.data.Response
-import com.legion1900.cleannews.data.impl.TimeUtils
+import com.legion1900.cleannews.data.impl.utils.TimeUtils
+import io.reactivex.Observable
 
 import retrofit2.http.GET
 import retrofit2.http.QueryMap
 import java.util.*
+import kotlin.collections.HashMap
 
-internal interface NewsService {
+interface NewsService {
     @GET("v2/everything")
-    fun queryNews(@QueryMap options: Map<String, String>): Response
+    fun queryNews(@QueryMap options: Map<String, String>): Observable<Response>
 
     companion object {
         private const val KEY_TOPIC = "q"

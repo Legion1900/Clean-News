@@ -1,4 +1,4 @@
-package com.legion1900.cleannews.data.impl
+package com.legion1900.cleannews.data.impl.utils
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -10,7 +10,7 @@ object TimeUtils {
         return dateFormat.format(date)
     }
 
-    fun getCurrentDate() = Calendar.getInstance().time
+    fun getCurrentDate(): Date = Calendar.getInstance().time
 
     /*
     * Subtracts second date from first.

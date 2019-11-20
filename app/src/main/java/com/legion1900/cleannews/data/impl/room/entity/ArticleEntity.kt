@@ -16,6 +16,6 @@ import com.legion1900.cleannews.data.base.data.Article
 )
 data class ArticleEntity(
     val article: Article,
-    var topic: String? = null,
+    var topic: String,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
 )
