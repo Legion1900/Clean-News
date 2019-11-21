@@ -5,6 +5,9 @@ import com.legion1900.cleannews.data.base.data.Article
 import com.legion1900.cleannews.data.impl.room.database.CacheDatabase
 import com.legion1900.cleannews.data.impl.room.entity.CacheDataEntity
 import com.legion1900.cleannews.data.impl.utils.EntityConverter
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.Single
 import java.util.*
 
 /*
@@ -16,25 +19,24 @@ class NewsCache(db: CacheDatabase) :
     private val articleDao = db.articleDao()
     private val cacheDao = db.cacheDataDao()
 
-    override fun writeArticles(topic: String, date: Date, articles: List<Article>) {
-        updateCacheData(topic, date)
+    override fun writeArticles(topic: String, date: Date, articles: List<Article>): Completable {
+        val updateCache = updateCacheData(topic, date)
         val entities = EntityConverter.articlesToEntities(articles, topic)
-        articleDao.insert(*entities.toTypedArray())
+        val articleInsertion = articleDao.insert(*entities.toTypedArray())
+        return updateCache.andThen(articleInsertion)
     }
 
-    private fun updateCacheData(topic: String, date: Date) {
-        cacheDao.deleteDataFor(topic)
+    private fun updateCacheData(topic: String, date: Date): Completable {
+        val deletion = cacheDao.deleteDataFor(topic)
         val cache = CacheDataEntity(topic, date)
-        cacheDao.insert(cache)
+        val insertion = cacheDao.insert(cache)
+        return deletion.andThen(insertion)
     }
 
-    override fun readArticles(topic: String): List<Article> = articleDao.getArticlesFor(topic)
+    override fun readArticles(topic: String): Observable<List<Article>> =
+        articleDao.getArticlesFor(topic)
 
-    override fun lastModified(topic: String): Date = cacheDao.getDateFor(topic) ?: DEF_DATE
+    override fun lastModified(topic: String): Single<Date> = cacheDao.getDateFor(topic)
 
-    override fun clearCache() = cacheDao.clear()
-
-    companion object {
-        val DEF_DATE = Date(0)
-    }
+    override fun clearCache(): Completable = cacheDao.clear()
 }
