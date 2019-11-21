@@ -32,14 +32,16 @@ class ArticleDaoTest {
     @Test
     fun insert_test() {
         val dao = db.articleDao()
-        dao.insert(*entities).blockingAwait()
+        dao.insert(*entities).test()
+            .assertComplete()
+            .awaitTerminalEvent()
 
-        val real = mutableMapOf<String, List<Article>>()
         for (topic in TOPICS) {
-            real += topic to dao.getArticlesFor(topic).blockingFirst()
+            dao.getArticlesFor(topic).test()
+                .assertComplete()
+                .assertValue { it == articles[topic] }
+                .awaitTerminalEvent()
         }
-
-        Assertions.assertThat(articles).contains(*real.entries.toTypedArray())
     }
 
     private companion object {

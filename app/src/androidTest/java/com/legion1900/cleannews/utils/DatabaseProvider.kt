@@ -10,5 +10,7 @@ object DatabaseProvider {
     fun <T : RoomDatabase> provideInMemoryDb(dbClass: Class<T>): T = Room.inMemoryDatabaseBuilder(
         InstrumentationRegistry.getInstrumentation().context,
         dbClass
-    ).build()
+    )
+        .allowMainThreadQueries()
+        .build()
 }

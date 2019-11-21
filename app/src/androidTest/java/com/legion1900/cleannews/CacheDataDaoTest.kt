@@ -76,7 +76,6 @@ class CacheDataDaoTest {
 
     private fun populateTable() {
         val dao = db.cacheDataDao()
-//        data.forEach { dao.insert(it).blockingAwait() }
         data.forEach { dao.insert(it).test().assertComplete().awaitTerminalEvent() }
     }
 
