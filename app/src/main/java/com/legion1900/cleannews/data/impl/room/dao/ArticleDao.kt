@@ -13,6 +13,10 @@ interface ArticleDao {
     @Insert
     fun insert(vararg articles: ArticleEntity): Completable
 
+    /*
+    * Observable will not complete even if there is no emissions after n-th one.
+    * It will listen for table changes.
+    * */
     @Query("SELECT article FROM Article WHERE topic IN (:topic)")
     fun getArticlesFor(topic: String): Observable<List<Article>>
 }
