@@ -1,5 +1,6 @@
 package com.legion1900.cleannews
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.legion1900.cleannews.data.base.data.Article
 import com.legion1900.cleannews.data.impl.room.database.CacheDatabase
@@ -7,9 +8,9 @@ import com.legion1900.cleannews.data.impl.room.entity.CacheDataEntity
 import com.legion1900.cleannews.utils.DataProvider
 import com.legion1900.cleannews.utils.DataProvider.TOPICS
 import com.legion1900.cleannews.utils.DatabaseProvider
-import org.assertj.core.api.Assertions
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -18,10 +19,14 @@ class ArticleDaoTest {
 
     private lateinit var db: CacheDatabase
 
+    @Rule
+    @JvmField
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
     @Before
     fun onPrepareDb() {
         db = DatabaseProvider.provideInMemoryDb(CacheDatabase::class.java)
-        cache.forEach { db.cacheDataDao().insert(it).blockingAwait() }
+        cache.forEach { db.cacheDataDao().insert(it).test().awaitTerminalEvent() }
     }
 
     @After
@@ -38,9 +43,7 @@ class ArticleDaoTest {
 
         for (topic in TOPICS) {
             dao.getArticlesFor(topic).test()
-                .assertComplete()
                 .assertValue { it == articles[topic] }
-                .awaitTerminalEvent()
         }
     }
 

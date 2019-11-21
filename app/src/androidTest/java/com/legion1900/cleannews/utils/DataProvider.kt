@@ -1,6 +1,7 @@
 package com.legion1900.cleannews.utils
 
 import com.legion1900.cleannews.data.base.data.Article
+import com.legion1900.cleannews.data.base.data.Response
 import com.legion1900.cleannews.data.impl.room.entity.ArticleEntity
 import com.legion1900.cleannews.data.impl.room.entity.CacheDataEntity
 import com.legion1900.cleannews.data.impl.utils.EntityConverter.articlesToEntities
@@ -10,6 +11,7 @@ import kotlin.random.Random
 object DataProvider {
     val TOPICS = arrayOf("Software", "Cybersecurity", "Cinema", "Sport")
 
+    private const val STUB = "Stub"
     private const val AUTHOR = "Author"
     private const val TITLE = "Title"
     private const val PUB_AT = "01-01-2020"
@@ -53,4 +55,6 @@ object DataProvider {
             list += buildArticle()
         return list
     }
+
+    fun buildResponse(articles: List<Article>) = Response(STUB, STUB, STUB, articles)
 }

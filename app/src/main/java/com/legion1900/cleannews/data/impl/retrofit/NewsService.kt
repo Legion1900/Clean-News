@@ -15,6 +15,8 @@ interface NewsService {
     fun queryNews(@QueryMap options: Map<String, String>): Observable<Response>
 
     companion object {
+        const val DEF_PAGE_SIZE = 20
+
         private const val KEY_TOPIC = "q"
         private const val KEY_DATE = "from"
         private const val KEY_SORT = "sortBy"
