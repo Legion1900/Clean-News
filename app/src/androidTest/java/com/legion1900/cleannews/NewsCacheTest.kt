@@ -1,6 +1,5 @@
 package com.legion1900.cleannews
 
-import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.legion1900.cleannews.data.impl.NewsCache
@@ -60,9 +59,7 @@ class NewsCacheTest {
             Completable.create { emitter: CompletableEmitter -> emitter.onComplete() }
         )
         `when`(articleDao.getArticlesFor(topic)).thenReturn(Observable.create { emitter ->
-            emitter.onNext(
-                articles
-            )
+            emitter.onNext(articles)
         })
     }
 
@@ -93,6 +90,24 @@ class NewsCacheTest {
         verify(cacheDao).deleteDataFor(any())
         verify(cacheDao).insert(any())
         verify(articleDao).insert(any())
+    }
+
+    @Test
+    fun readArticles_test() {
+        newsCache.readArticles(topic).blockingFirst()
+        verify(articleDao).getArticlesFor(topic)
+    }
+
+    @Test
+    fun lastModified_tes() {
+        newsCache.lastModified(topic).blockingGet()
+        verify(cacheDao).getDateFor(topic)
+    }
+
+    @Test
+    fun clearCache_test() {
+        newsCache.clearCache().blockingAwait()
+        verify(cacheDao).clear()
     }
 
     private fun <T> any() = Mockito.any<T>() as T
