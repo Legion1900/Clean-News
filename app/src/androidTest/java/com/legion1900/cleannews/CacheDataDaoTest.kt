@@ -22,7 +22,6 @@ class CacheDataDaoTest {
     @JvmField
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-
     @Before
     fun onPrepareDb() {
         db = DatabaseProvider.provideInMemoryDb(CacheDatabase::class.java)
@@ -77,7 +76,8 @@ class CacheDataDaoTest {
 
     private fun populateTable() {
         val dao = db.cacheDataDao()
-        data.forEach { dao.insert(it).blockingAwait() }
+//        data.forEach { dao.insert(it).blockingAwait() }
+        data.forEach { dao.insert(it).test().assertComplete().awaitTerminalEvent() }
     }
 
     private companion object {

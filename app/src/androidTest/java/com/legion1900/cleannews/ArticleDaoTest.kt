@@ -1,6 +1,5 @@
 package com.legion1900.cleannews
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.legion1900.cleannews.data.base.data.Article
 import com.legion1900.cleannews.data.impl.room.database.CacheDatabase
@@ -9,10 +8,8 @@ import com.legion1900.cleannews.utils.DataProvider
 import com.legion1900.cleannews.utils.DataProvider.TOPICS
 import com.legion1900.cleannews.utils.DatabaseProvider
 import org.assertj.core.api.Assertions
-import org.assertj.core.api.MapAssert
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
