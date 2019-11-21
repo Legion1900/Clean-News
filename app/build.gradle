@@ -38,6 +38,7 @@ android {
 dependencies {
     def room_version = '2.2.1'
     def retrofit_version = '2.6.1'
+    def mockito_version = '3.1.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -69,9 +70,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.14.0'
     androidTestImplementation 'org.assertj:assertj-core:3.14.0'
-    testImplementation 'org.mockito:mockito-core:3.1.0'
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_version"
     androidTestImplementation 'android.arch.core:core-testing:1.1.1'
-    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
+    androidTestImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
     testImplementation 'androidx.room:room-testing:2.2.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
