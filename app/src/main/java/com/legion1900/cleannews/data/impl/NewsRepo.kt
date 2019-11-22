@@ -28,8 +28,7 @@ class NewsRepo(
         return isOutdated(topic, date).flatMapObservable { isOutdated ->
             if (isOutdated) {
                 val data = loadNFilter(topic, date)
-                disposables.add(data.subscribe { cache.writeArticles(topic, date, it).subscribe() })
-                data.observeOn(AndroidSchedulers.mainThread())
+                cacheArticles(topic, date, data).observeOn(AndroidSchedulers.mainThread())
             } else
                 cache.readArticles(topic)
         }
@@ -51,6 +50,15 @@ class NewsRepo(
             .buffer(NewsService.DEF_PAGE_SIZE)
             .cache()
     }
+
+    private fun cacheArticles(topic: String, date: Date, news: Observable<List<Article>>) =
+        news.doOnNext {
+            cache.writeArticles(
+                topic,
+                date,
+                it
+            )
+        }
 
     override fun clearCache(): Completable {
         disposables.clear()
