@@ -1,4 +1,4 @@
-package com.legion1900.cleannews.utils
+package utils
 
 import org.mockito.Mockito
 

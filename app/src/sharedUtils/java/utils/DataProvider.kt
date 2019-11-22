@@ -1,4 +1,4 @@
-package com.legion1900.cleannews.utils
+package utils
 
 import com.legion1900.cleannews.data.base.data.Article
 import com.legion1900.cleannews.data.base.data.Response
@@ -22,7 +22,8 @@ object DataProvider {
     fun buildDefaultCacheEntities(): List<CacheDataEntity> {
         val entities = mutableListOf<CacheDataEntity>()
         for (topic in TOPICS)
-            entities += CacheDataEntity(topic,
+            entities += CacheDataEntity(
+                topic,
                 getRandomDate()
             )
         return entities
@@ -56,5 +57,9 @@ object DataProvider {
         return list
     }
 
-    fun buildResponse(articles: List<Article>) = Response(STUB, STUB, STUB, articles)
+    fun buildResponse(articles: List<Article>) = Response(
+        STUB,
+        STUB,
+        STUB, articles
+    )
 }

@@ -1,14 +1,10 @@
 package com.legion1900.cleannews
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.legion1900.cleannews.data.impl.CacheRepo
 import com.legion1900.cleannews.data.impl.room.dao.ArticleDao
 import com.legion1900.cleannews.data.impl.room.dao.CacheDataDao
 import com.legion1900.cleannews.data.impl.room.database.CacheDatabase
 import com.legion1900.cleannews.data.impl.utils.TimeUtils
-import com.legion1900.cleannews.utils.DataProvider
-import com.legion1900.cleannews.utils.DataProvider.TOPICS
 import io.reactivex.Completable
 import io.reactivex.CompletableEmitter
 import io.reactivex.Observable
@@ -18,14 +14,17 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnit
+import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.junit.MockitoRule
+import utils.DataProvider
+import utils.DataProvider.TOPICS
+import utils.TestUtils.any
 import kotlin.random.Random
 
-@RunWith(AndroidJUnit4::class)
+@RunWith(MockitoJUnitRunner::class)
 class CacheRepoTest {
     @Mock
     lateinit var db: CacheDatabase
@@ -37,10 +36,6 @@ class CacheRepoTest {
     @Rule
     @JvmField
     val rule: MockitoRule = MockitoJUnit.rule()
-
-    @Rule
-    @JvmField
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var cacheRepo: CacheRepo
 
@@ -109,8 +104,6 @@ class CacheRepoTest {
         cacheRepo.clearCache().blockingAwait()
         verify(cacheDao).clear()
     }
-
-    private fun <T> any() = Mockito.any<T>() as T
 
     private companion object {
         const val LIST_SIZE = 20

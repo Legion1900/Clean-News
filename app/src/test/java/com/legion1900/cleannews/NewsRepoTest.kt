@@ -1,14 +1,9 @@
 package com.legion1900.cleannews
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.legion1900.cleannews.data.base.CacheRepository
 import com.legion1900.cleannews.data.impl.NewsRepo
 import com.legion1900.cleannews.data.impl.retrofit.NewsService
 import com.legion1900.cleannews.data.impl.utils.TimeUtils
-import com.legion1900.cleannews.utils.DataProvider
-import com.legion1900.cleannews.utils.DataProvider.TOPICS
-import com.legion1900.cleannews.utils.TestUtils.any
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -18,14 +13,20 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyList
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnit
+import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.junit.MockitoRule
+import utils.DataProvider
+import utils.DataProvider.TOPICS
+import utils.TestUtils.any
 import java.util.*
 import kotlin.random.Random
 
-@RunWith(AndroidJUnit4::class)
+@RunWith(MockitoJUnitRunner::class)
 class NewsRepoTest {
     @Mock
     lateinit var service: NewsService
@@ -36,10 +37,6 @@ class NewsRepoTest {
     @Rule
     @JvmField
     val rule: MockitoRule = MockitoJUnit.rule()
-
-    @Rule
-    @JvmField
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var repo: NewsRepo
 

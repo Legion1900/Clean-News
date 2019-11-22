@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.EmptyResultSetException
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.legion1900.cleannews.data.impl.room.database.CacheDatabase
-import com.legion1900.cleannews.utils.DataProvider
+import utils.DataProvider
 import com.legion1900.cleannews.utils.DatabaseProvider
 import org.junit.After
 import org.junit.Before

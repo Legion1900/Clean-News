@@ -5,8 +5,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.legion1900.cleannews.data.base.data.Article
 import com.legion1900.cleannews.data.impl.room.database.CacheDatabase
 import com.legion1900.cleannews.data.impl.room.entity.CacheDataEntity
-import com.legion1900.cleannews.utils.DataProvider
-import com.legion1900.cleannews.utils.DataProvider.TOPICS
+import utils.DataProvider
+import utils.DataProvider.TOPICS
 import com.legion1900.cleannews.utils.DatabaseProvider
 import org.junit.After
 import org.junit.Before
