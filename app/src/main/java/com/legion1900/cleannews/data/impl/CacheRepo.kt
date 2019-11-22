@@ -13,7 +13,7 @@ import java.util.*
 /*
 * Performs operations synchronously.
 * */
-class NewsCache(db: CacheDatabase) :
+class CacheRepo(db: CacheDatabase) :
     CacheRepository {
 
     private val articleDao = db.articleDao()

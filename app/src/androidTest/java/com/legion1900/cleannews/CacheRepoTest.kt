@@ -2,7 +2,7 @@ package com.legion1900.cleannews
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.legion1900.cleannews.data.impl.NewsCache
+import com.legion1900.cleannews.data.impl.CacheRepo
 import com.legion1900.cleannews.data.impl.room.dao.ArticleDao
 import com.legion1900.cleannews.data.impl.room.dao.CacheDataDao
 import com.legion1900.cleannews.data.impl.room.database.CacheDatabase
@@ -26,7 +26,7 @@ import org.mockito.junit.MockitoRule
 import kotlin.random.Random
 
 @RunWith(AndroidJUnit4::class)
-class NewsCacheTest {
+class CacheRepoTest {
     @Mock
     lateinit var db: CacheDatabase
     @Mock
@@ -42,7 +42,7 @@ class NewsCacheTest {
     @JvmField
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var newsCache: NewsCache
+    private lateinit var cacheRepo: CacheRepo
 
     @Before
     fun onMockInit() {
@@ -51,7 +51,7 @@ class NewsCacheTest {
         initArticleDao()
         initCacheDao()
 
-        newsCache = NewsCache(db)
+        cacheRepo = CacheRepo(db)
     }
 
     private fun initArticleDao() {
@@ -82,7 +82,7 @@ class NewsCacheTest {
 
     @Test
     fun writeArticles_test() {
-        newsCache.writeArticles(topic, date, articles)
+        cacheRepo.writeArticles(topic, date, articles)
             .test()
             .assertComplete()
             .awaitTerminalEvent()
@@ -94,19 +94,19 @@ class NewsCacheTest {
 
     @Test
     fun readArticles_test() {
-        newsCache.readArticles(topic).blockingFirst()
+        cacheRepo.readArticles(topic).blockingFirst()
         verify(articleDao).getArticlesFor(topic)
     }
 
     @Test
     fun lastModified_tes() {
-        newsCache.lastModified(topic).blockingGet()
+        cacheRepo.lastModified(topic).blockingGet()
         verify(cacheDao).getDateFor(topic)
     }
 
     @Test
     fun clearCache_test() {
-        newsCache.clearCache().blockingAwait()
+        cacheRepo.clearCache().blockingAwait()
         verify(cacheDao).clear()
     }
 
