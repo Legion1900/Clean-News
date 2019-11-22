@@ -1,32 +1,37 @@
 package com.legion1900.cleannews
 
-import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.legion1900.cleannews.data.impl.NewsCache
+import com.legion1900.cleannews.data.base.CacheRepository
 import com.legion1900.cleannews.data.impl.NewsRepo
 import com.legion1900.cleannews.data.impl.retrofit.NewsService
-import com.legion1900.cleannews.data.impl.room.database.CacheDatabase
+import com.legion1900.cleannews.data.impl.utils.TimeUtils
 import com.legion1900.cleannews.utils.DataProvider
 import com.legion1900.cleannews.utils.DataProvider.TOPICS
-import com.legion1900.cleannews.utils.DatabaseProvider
 import com.legion1900.cleannews.utils.TestUtils.any
+import io.reactivex.Completable
 import io.reactivex.Observable
-import org.assertj.core.api.Assertions
+import io.reactivex.Single
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
+import java.util.*
 import kotlin.random.Random
 
 @RunWith(AndroidJUnit4::class)
 class NewsRepoTest {
     @Mock
     lateinit var service: NewsService
+
+    @Mock
+    lateinit var newsCache: CacheRepository
 
     @Rule
     @JvmField
@@ -40,27 +45,59 @@ class NewsRepoTest {
 
     @Before
     fun onInit() {
-        val db = DatabaseProvider.provideInMemoryDb(CacheDatabase::class.java)
         prepareRetrofit()
-        repo = NewsRepo(NewsCache(db), service)
+        prepareCacheRepo()
+        repo = NewsRepo(newsCache, service)
     }
+
+    @After
+    fun onResetMocks() = reset(service, newsCache)
 
     private fun prepareRetrofit() {
         `when`(service.queryNews(any())).thenReturn(Observable.just(response))
     }
 
+    private fun prepareCacheRepo() {
+        `when`(newsCache.clearCache()).thenReturn(Completable.create { it.onComplete() })
+        `when`(newsCache.readArticles(topic)).thenReturn(Observable.just(articles))
+        `when`(newsCache.lastModified(any())).thenReturn(Single.just(DATE_OLD_CACHE))
+        `when`(
+            newsCache.writeArticles(anyString(), any(), anyList())
+        ).thenReturn(Completable.create { it.onComplete() })
+    }
+
     @Test
-    fun loadNews_emptyDb_test() {
+    fun loadNews_withNoCache_test() {
         repo.loadNews(topic).doOnNext { list ->
-            Assertions.assertThat(list.all {
-                it.title.toString().contains(NewsRepo.MARK)
-            }).isTrue()
+            assertAllElements(list) { it.title.toString().length < NewsRepo.MAX_LENGTH }
+            assertAllElements(list) { it.title.toString().contains(NewsRepo.MARK) }
         }.test().awaitTerminalEvent()
+
+        verify(service).queryNews(anyMap())
+        verify(newsCache).writeArticles(anyString(), any(), anyList())
+    }
+
+    @Test
+    fun loadNews_withExistingCache_test() {
+        `when`(newsCache.lastModified(topic)).thenReturn(Single.just(DATE_NOW))
+        repo.loadNews(topic).test().awaitTerminalEvent()
+
+        verify(service, never()).queryNews(anyMap())
+        verify(newsCache, never()).writeArticles(anyString(), any(), anyList())
+
+        verify(newsCache).readArticles(anyString())
+    }
+
+    private fun <T> assertAllElements(list: List<T>, predicate: (el: T) -> Boolean) {
+        assertThat(list.all { predicate(it) }).isTrue()
     }
 
     private companion object {
         const val DEF_NUM = 20
+        val DATE_OLD_CACHE = Date(0)
+        val DATE_NOW = TimeUtils.getCurrentDate()
         val topic = TOPICS[Random.nextInt(TOPICS.size)]
-        val response = DataProvider.buildResponse(DataProvider.buildArticleList(DEF_NUM))
+        val articles = DataProvider.buildArticleList(DEF_NUM)
+        val response = DataProvider.buildResponse(articles)
     }
 }
