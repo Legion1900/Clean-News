@@ -16,6 +16,7 @@ interface NewsService {
 
     companion object {
         const val DEF_PAGE_SIZE = 20
+        const val BASE_URL = "https://newsapi.org"
 
         private const val KEY_TOPIC = "q"
         private const val KEY_DATE = "from"

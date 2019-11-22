@@ -2,6 +2,7 @@
     package="com.legion1900.cleannews">
 
     <application
+        android:name=".presentation.presenter.impl.dagger.NewsApp"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
