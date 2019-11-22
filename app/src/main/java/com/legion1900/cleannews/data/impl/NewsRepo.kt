@@ -28,7 +28,7 @@ class NewsRepo(
         return isOutdated(topic, date).flatMapObservable { isOutdated ->
             if (isOutdated) {
                 val data = loadNFilter(topic, date)
-                cacheArticles(topic, date, data).observeOn(AndroidSchedulers.mainThread())
+                cacheArticles(topic, date, data)
             } else
                 cache.readArticles(topic)
         }
