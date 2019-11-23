@@ -18,4 +18,5 @@
     <string name="source">Source: %1s</string>
 
     <string name="transition_article">Shared Article</string>
+    <string name="label_article_activity">Article</string>
 </resources>

@@ -1,11 +1,11 @@
-package com.legion1900.cleannews.presentation.presenter.impl.dagger
+package com.legion1900.cleannews.presentation.presenter.dagger
 
 import android.app.Application
-import com.legion1900.cleannews.presentation.presenter.impl.dagger.component.AppComponent
-import com.legion1900.cleannews.presentation.presenter.impl.dagger.component.DaggerAppComponent
-import com.legion1900.cleannews.presentation.presenter.impl.dagger.module.AppModule
-import com.legion1900.cleannews.presentation.presenter.impl.dagger.module.NewsRepoModule
-import com.legion1900.cleannews.presentation.presenter.impl.dagger.module.NewsServiceModule
+import com.legion1900.cleannews.presentation.presenter.dagger.component.AppComponent
+import com.legion1900.cleannews.presentation.presenter.dagger.component.DaggerAppComponent
+import com.legion1900.cleannews.presentation.presenter.dagger.module.AppModule
+import com.legion1900.cleannews.presentation.presenter.dagger.module.NewsRepoModule
+import com.legion1900.cleannews.presentation.presenter.dagger.module.NewsServiceModule
 
 class NewsApp : Application() {
 

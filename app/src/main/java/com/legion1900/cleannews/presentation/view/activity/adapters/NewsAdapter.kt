@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.legion1900.cleannews.R
 import com.legion1900.cleannews.data.base.data.Article
-import com.legion1900.cleannews.presentation.presenter.impl.dagger.NewsApp
+import com.legion1900.cleannews.presentation.presenter.dagger.NewsApp
 import javax.inject.Inject
 
 class NewsAdapter(private val listener: View.OnClickListener) :

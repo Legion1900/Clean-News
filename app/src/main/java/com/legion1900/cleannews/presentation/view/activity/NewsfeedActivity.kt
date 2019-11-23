@@ -1,5 +1,8 @@
 package com.legion1900.cleannews.presentation.view.activity
 
+import android.app.ActivityOptions
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +13,7 @@ import com.legion1900.cleannews.R
 import com.legion1900.cleannews.data.base.data.Article
 import com.legion1900.cleannews.databinding.ActivityNewsfeedBinding
 import com.legion1900.cleannews.presentation.presenter.base.Presenter
-import com.legion1900.cleannews.presentation.presenter.impl.dagger.NewsApp
+import com.legion1900.cleannews.presentation.presenter.dagger.NewsApp
 import com.legion1900.cleannews.presentation.view.activity.adapters.NewsAdapter
 import com.legion1900.cleannews.presentation.view.activity.listener.OnTopicSelectedListener
 import com.legion1900.cleannews.presentation.view.dialogs.ErrorDialog
@@ -33,7 +36,13 @@ class NewsfeedActivity : AppCompatActivity() {
         }
     )
 
-    private val adapter = NewsAdapter(View.OnClickListener { TODO("Add ArticleActivity") })
+    private val adapter = NewsAdapter(View.OnClickListener {
+        val intent = Intent(this, ArticleActivity::class.java)
+        val i = binding.rvNews.getChildAdapterPosition(it)
+        val article = presenter.articles.value?.get(i)
+        intent.putExtra(ArticleActivity.KEY_ARTICLE, article)
+        startActivityTransition(intent, it)
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,5 +107,17 @@ class NewsfeedActivity : AppCompatActivity() {
 
     private fun requestNews() {
         presenter.updateNewsfeed(binding.spinnerTopics.selectedItem as String)
+    }
+
+    private fun startActivityTransition(intent: Intent, fromView: View) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val options = ActivityOptions.makeSceneTransitionAnimation(
+                this,
+                fromView,
+                fromView.transitionName
+            ).toBundle()
+            startActivity(intent, options)
+        } else
+            startActivity(intent)
     }
 }

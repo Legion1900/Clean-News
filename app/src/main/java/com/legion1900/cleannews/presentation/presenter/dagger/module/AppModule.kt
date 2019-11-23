@@ -1,4 +1,4 @@
-package com.legion1900.cleannews.presentation.presenter.impl.dagger.module
+package com.legion1900.cleannews.presentation.presenter.dagger.module
 
 import android.content.Context
 import dagger.Module

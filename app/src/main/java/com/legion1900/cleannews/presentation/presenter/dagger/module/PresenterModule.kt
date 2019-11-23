@@ -1,4 +1,4 @@
-package com.legion1900.cleannews.presentation.presenter.impl.dagger.module
+package com.legion1900.cleannews.presentation.presenter.dagger.module
 
 import com.legion1900.cleannews.data.impl.NewsRepo
 import com.legion1900.cleannews.presentation.presenter.base.Presenter
