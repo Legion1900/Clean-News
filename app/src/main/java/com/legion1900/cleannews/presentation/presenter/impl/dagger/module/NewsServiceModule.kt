@@ -1,5 +1,6 @@
 package com.legion1900.cleannews.presentation.presenter.impl.dagger.module
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.legion1900.cleannews.data.impl.retrofit.NewsService
 import com.legion1900.cleannews.data.impl.retrofit.NewsService.Companion.BASE_URL
 import dagger.Module
@@ -15,6 +16,7 @@ class NewsServiceModule {
     fun provideRetrofit(): Retrofit =
         Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

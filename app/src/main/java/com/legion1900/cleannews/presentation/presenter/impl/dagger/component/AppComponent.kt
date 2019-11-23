@@ -4,8 +4,8 @@ import com.legion1900.cleannews.presentation.presenter.impl.dagger.module.AppMod
 import com.legion1900.cleannews.presentation.presenter.impl.dagger.module.NewsRepoModule
 import com.legion1900.cleannews.presentation.presenter.impl.dagger.module.NewsServiceModule
 import com.legion1900.cleannews.presentation.presenter.impl.dagger.module.PresenterModule
-import com.legion1900.cleannews.presentation.view.NewsfeedActivity
-import com.legion1900.cleannews.presentation.view.adapters.NewsAdapter
+import com.legion1900.cleannews.presentation.view.activity.NewsfeedActivity
+import com.legion1900.cleannews.presentation.view.activity.adapters.NewsAdapter
 import dagger.Component
 import javax.inject.Singleton
 
