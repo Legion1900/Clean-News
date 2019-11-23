@@ -7,4 +7,18 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="TextView">
+        <item name="android:layout_marginBottom">@dimen/small</item>
+    </style>
+
+    <style name="RvItem">
+        <item name="android:paddingStart">@dimen/small</item>
+        <item name="android:paddingEnd">@dimen/small</item>
+        <item name="android:paddingTop">@dimen/small</item>
+    </style>
+
+    <style name="ArticlePicture">
+        <item name="android:layout_marginBottom">@dimen/middle</item>
+    </style>
 </resources>

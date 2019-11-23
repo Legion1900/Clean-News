@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">RxPM News</string>
-    <string name="title_newsfeed">RxPM News</string>
+    <string name="app_name">Clean News</string>
     <string name="title_activity_article">Article</string>
 
     <string name="msg_err">Connection problems has occurred</string>
