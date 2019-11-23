@@ -68,7 +68,7 @@ class NewsRepo @Inject constructor(
     companion object {
         const val TIMEOUT = 60_000
         const val MARK = "Filtered"
-        const val MAX_LENGTH = 20
+        const val MAX_LENGTH = 50
         val DEF_DATE = Date(0)
     }
 }

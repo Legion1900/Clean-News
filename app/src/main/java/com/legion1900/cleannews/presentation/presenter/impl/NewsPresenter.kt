@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.legion1900.cleannews.data.base.NewsRepository
 import com.legion1900.cleannews.data.base.data.Article
 import com.legion1900.cleannews.presentation.presenter.base.Presenter
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 
 class NewsPresenter(private val repo: NewsRepository) : ViewModel(), Presenter {
@@ -32,13 +33,17 @@ class NewsPresenter(private val repo: NewsRepository) : ViewModel(), Presenter {
 
     private fun setupLoading(topic: String) {
         disposables.add(
-            repo.loadNews(topic).doFinally { disposables.clear() }.subscribe(
+            repo.loadNews(topic).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 {
-                    mIsLoading.postValue(false)
-                    mArticles.postValue(it)
+                    mIsLoading.value = false
+                    mArticles.value = it
                 },
                 {
-                    mIsLoading.postValue(false)
+                    mIsLoading.value = false
+                    mIsError.value = true
+                },
+                {
+                    mIsLoading.value = false
                 }
             )
         )
