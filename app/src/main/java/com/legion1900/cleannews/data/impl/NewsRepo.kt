@@ -8,15 +8,15 @@ import com.legion1900.cleannews.data.impl.utils.TimeUtils
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
+import javax.inject.Inject
 
 /*
 * NewsRepo should be injected.
 * */
-class NewsRepo(
+class NewsRepo @Inject constructor(
     private val cache: CacheRepository,
     private val service: NewsService
 ) : NewsRepository {
