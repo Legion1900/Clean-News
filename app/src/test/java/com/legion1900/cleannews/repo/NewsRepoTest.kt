@@ -1,4 +1,4 @@
-package com.legion1900.cleannews
+package com.legion1900.cleannews.repo
 
 import com.legion1900.cleannews.data.base.CacheRepository
 import com.legion1900.cleannews.data.impl.NewsRepo
@@ -56,7 +56,9 @@ class NewsRepoTest {
 
     private fun prepareCacheRepo() {
         `when`(newsCache.clearCache()).thenReturn(Completable.create { it.onComplete() })
-        `when`(newsCache.readArticles(topic)).thenReturn(Observable.just(articles))
+        `when`(newsCache.readArticles(topic)).thenReturn(Observable.just(
+            articles
+        ))
         `when`(newsCache.lastModified(any())).thenReturn(Single.just(DATE_OLD_CACHE))
         `when`(
             newsCache.writeArticles(anyString(), any(), anyList())
@@ -76,7 +78,9 @@ class NewsRepoTest {
 
     @Test
     fun loadNews_withExistingCache_test() {
-        `when`(newsCache.lastModified(topic)).thenReturn(Single.just(DATE_NOW))
+        `when`(newsCache.lastModified(topic)).thenReturn(Single.just(
+            DATE_NOW
+        ))
         repo.loadNews(topic).test().awaitTerminalEvent()
 
         verify(service, never()).queryNews(anyMap())

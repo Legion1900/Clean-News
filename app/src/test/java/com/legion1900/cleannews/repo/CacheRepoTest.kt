@@ -1,4 +1,4 @@
-package com.legion1900.cleannews
+package com.legion1900.cleannews.repo
 
 import com.legion1900.cleannews.data.impl.CacheRepo
 import com.legion1900.cleannews.data.impl.room.dao.ArticleDao
@@ -77,7 +77,11 @@ class CacheRepoTest {
 
     @Test
     fun writeArticles_test() {
-        cacheRepo.writeArticles(topic, date, articles)
+        cacheRepo.writeArticles(
+            topic,
+            date,
+            articles
+        )
             .test()
             .assertComplete()
             .awaitTerminalEvent()
