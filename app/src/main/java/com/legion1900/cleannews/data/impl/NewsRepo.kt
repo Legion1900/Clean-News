@@ -8,6 +8,7 @@ import com.legion1900.cleannews.data.impl.utils.TimeUtils
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
@@ -26,11 +27,12 @@ class NewsRepo @Inject constructor(
     override fun loadNews(topic: String): Observable<List<Article>> {
         val date = TimeUtils.getCurrentDate()
         return isOutdated(topic, date).flatMapObservable { isOutdated ->
-            if (isOutdated) {
+            val source = if (isOutdated) {
                 val data = loadNFilter(topic, date)
                 cacheArticles(topic, date, data)
             } else
                 cache.readArticles(topic)
+            source.observeOn(AndroidSchedulers.mainThread())
         }
     }
 
