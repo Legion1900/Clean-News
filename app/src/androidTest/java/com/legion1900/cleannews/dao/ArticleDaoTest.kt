@@ -1,4 +1,4 @@
-package com.legion1900.cleannews
+package com.legion1900.cleannews.dao
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4

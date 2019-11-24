@@ -1,4 +1,4 @@
-package com.legion1900.cleannews
+package com.legion1900.cleannews.dao
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.EmptyResultSetException
@@ -62,7 +62,8 @@ class CacheDataDaoTest {
         val dao = db.cacheDataDao()
         populateTable()
 
-        val topic = data[Random.nextInt(data.size)].topic
+        val topic = data[Random.nextInt(
+            data.size)].topic
         dao.deleteDataFor(topic)
             .test()
             .assertComplete()

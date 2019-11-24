@@ -6,12 +6,12 @@ import com.legion1900.cleannews.data.impl.retrofit.NewsService
 import com.legion1900.cleannews.data.impl.utils.TimeUtils
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.Single
+import io.reactivex.android.plugins.RxAndroidPlugins
+import io.reactivex.internal.schedulers.ExecutorScheduler.ExecutorWorker
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyList
 import org.mockito.ArgumentMatchers.anyString
@@ -24,7 +24,9 @@ import utils.DataProvider
 import utils.DataProvider.TOPICS
 import utils.TestUtils.any
 import java.util.*
+import java.util.concurrent.Executor
 import kotlin.random.Random
+
 
 @RunWith(MockitoJUnitRunner::class)
 class NewsRepoTest {
@@ -56,9 +58,11 @@ class NewsRepoTest {
 
     private fun prepareCacheRepo() {
         `when`(newsCache.clearCache()).thenReturn(Completable.create { it.onComplete() })
-        `when`(newsCache.readArticles(topic)).thenReturn(Observable.just(
-            articles
-        ))
+        `when`(newsCache.readArticles(topic)).thenReturn(
+            Observable.just(
+                articles
+            )
+        )
         `when`(newsCache.lastModified(any())).thenReturn(Single.just(DATE_OLD_CACHE))
         `when`(
             newsCache.writeArticles(anyString(), any(), anyList())
@@ -78,9 +82,11 @@ class NewsRepoTest {
 
     @Test
     fun loadNews_withExistingCache_test() {
-        `when`(newsCache.lastModified(topic)).thenReturn(Single.just(
-            DATE_NOW
-        ))
+        `when`(newsCache.lastModified(topic)).thenReturn(
+            Single.just(
+                DATE_NOW
+            )
+        )
         repo.loadNews(topic).test().awaitTerminalEvent()
 
         verify(service, never()).queryNews(anyMap())
@@ -93,12 +99,23 @@ class NewsRepoTest {
         assertThat(list.all { predicate(it) }).isTrue()
     }
 
-    private companion object {
-        const val DEF_NUM = 20
+    companion object {
+        private const val DEF_NUM = 20
         val DATE_OLD_CACHE = Date(0)
         val DATE_NOW = TimeUtils.getCurrentDate()
         val topic = TOPICS[Random.nextInt(TOPICS.size)]
         val articles = DataProvider.buildArticleList(DEF_NUM)
         val response = DataProvider.buildResponse(articles)
+
+        @BeforeClass
+        @JvmStatic
+        fun setUpRxSchedulers() {
+            val immediate: Scheduler = object : Scheduler() {
+                override fun createWorker(): Worker =
+                    ExecutorWorker(Executor { it.run() }, false)
+            }
+            RxAndroidPlugins.setInitMainThreadSchedulerHandler { immediate }
+        }
+
     }
 }
