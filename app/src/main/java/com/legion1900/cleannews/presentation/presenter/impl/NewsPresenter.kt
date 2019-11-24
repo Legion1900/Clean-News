@@ -48,4 +48,9 @@ class NewsPresenter(private val repo: NewsRepository) : ViewModel(), Presenter {
             )
         )
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        repo.clearCache().subscribe()
+    }
 }
